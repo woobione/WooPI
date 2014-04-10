@@ -1,11 +1,8 @@
 WoobiPI (WPI)
 =========
 
+*Version 1.0 BETA*
 WoobiPI (WPI) is a super lightweight API controller framework for PHP
-
-Version
-------------
-1.0
 
 About
 -----------
