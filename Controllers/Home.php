@@ -4,7 +4,13 @@ class Home extends WPIController {
 
 	public function __construct() {
 		$this->Configuration = array(
-			RequestHandler::Config_DefaultAction => 'Test'
+			RequestHandler::Config_DefaultAction	=> 'Index'
+		);
+		
+		$this->ActionConfiguration = array(
+			'Index' => array(
+				RequestHandler::Config_AllowGet		=> true
+			)
 		);
 	}
 

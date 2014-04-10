@@ -1,9 +1,12 @@
 <?php
 
 return array(
-	RequestHandler::Config_ControllerPath					=> 'Controllers/',
-	RequestHandler::Config_DefaultController				=> 'Home',
-	RequestHandler::Config_DefaultAction					=> 'Index',
+	WoobiPI::Config_Debug								=> false,
 	
-	ResultHandler::Config_PluginPath						=> 'Plugins/'
+	RequestHandler::Config_AllowGet						=> false,
+	RequestHandler::Config_ControllerPath				=> 'Controllers/',
+	RequestHandler::Config_DefaultController			=> 'Home',
+	RequestHandler::Config_DefaultAction				=> 'Index',
+	
+	ResultHandler::Config_PluginPath					=> 'Plugins/'
 );

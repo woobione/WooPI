@@ -6,6 +6,8 @@
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WoobiPI {
+	
+	const Config_Debug = 'debug';
 
 	/**
 	 * @var WoobiPI 
@@ -111,6 +113,14 @@ class WoobiPI {
 	 */
 	public function FrameworkIsLoaded() {
 		return $this->frameworkIsLoaded;
+	}
+	
+	/**
+	 * Check if WoobiPI is in debug mode
+	 * @return bool
+	 */
+	public static function IsDebug() {
+		return self::GetConfig(self::Config_Debug);
 	}
 
 }

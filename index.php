@@ -12,7 +12,7 @@ WoobiPI::Load();
 
 // Configure WoobiPI
 WoobiPI::Configure(array(
-	
+	WoobiPI::Config_Debug => false
 ));
 
 // Handle the request
