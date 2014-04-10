@@ -1,1 +1,19 @@
-// More to come here
+<?php
+
+// Set include path
+set_include_path(dirname(__FILE__) . DIRECTORY_SEPARATOR);
+define('WPI_PATH', 'WPI' . DIRECTORY_SEPARATOR);
+
+// Include WoobiPI
+include WPI_PATH . 'WoobiPI.php';
+
+// Load WoobiPI
+WoobiPI::Load();
+
+// Configure WoobiPI
+WoobiPI::Configure(array(
+	
+));
+
+// Handle the request
+WoobiPI::HandleRequest();
