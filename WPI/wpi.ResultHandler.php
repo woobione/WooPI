@@ -3,32 +3,32 @@
 /**
  * Handles result from the request
  */
-class ResultHandler {
+class ResultHandler implements IResultHandler {
 	
-	const Config_PluginPath = 'plugin_path';
-	
-	/**
-	 * Load plugins on construct
-	 */
-	public function __construct() {
-		$this->loadPlugins();
-	}
+	const Config_DefaultHeaders = 'default_headers';
 
 	/**
 	 * Handle the result
 	 * @param WPIResult $result
 	 */
 	public function HandleResult(WPIResult $result) {
+		$this->setDefaultHeaders();
+		$result->SetHeaders();
 		$result->Result();
 	}
 	
 	/**
-	 * Load plugins
-	 * @todo Should keep track of lodaded plugins
+	 * Set default headers for every request
 	 */
-	private function loadPlugins() {
-		foreach (glob(WoobiPI::GetConfig(self::Config_PluginPath) . 'plugin.*.php') as $pluginFile) {
-			require_once $pluginFile;
+	private function setDefaultHeaders() {
+		$defaultHeaders = WoobiPI::GetConfig(self::Config_DefaultHeaders);
+		
+		if (is_array($defaultHeaders)) {
+			foreach($defaultHeaders as $defaultHeader) {
+				header($defaultHeader);
+			}
+		} else {
+			header($defaultHeaders);
 		}
 	}
 

@@ -2,12 +2,10 @@
 
 abstract class WPIResult {
 
-	public function Result() {
-		
-	}
+	abstract public function Result();
 	
 	public function SetHeaders() {
-		
+		// Void
 	}
 
 }

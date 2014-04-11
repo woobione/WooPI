@@ -8,7 +8,7 @@ define('WPI_PATH', 'WPI' . DIRECTORY_SEPARATOR);
 include WPI_PATH . 'WoobiPI.php';
 
 // Load WoobiPI
-WoobiPI::Load();
+WoobiPI::Instance()->Load();
 
 // Configure WoobiPI
 WoobiPI::Configure(array(
