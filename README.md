@@ -1,6 +1,6 @@
 WoobiPI (WPI)
 =========
-*Version 1.0 BETA*
+*Version 1.0*
 
 WoobiPI (WPI) is a super lightweight API controller framework for PHP
 
@@ -9,3 +9,9 @@ About
 WoobiPI is all about simplicity. It allows you to only focus on your controllers while WoobiPI does the rest for you. Not only is it very configurable but also super lightweight.
 
 WoobiPI comes with a default configuration suited for most people. It then allows you to override almost everything at almost any place. Say, for example, that you want to have a controller specific configuration - well, WoobiPI handles it with excellence.
+
+Notes
+-----------
+This product is free to use for everyone and comes as is. Please write me if you like it and recommend improvements.
+
+This guide is a very good read for how it is supposed to function: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
