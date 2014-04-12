@@ -12,7 +12,8 @@ WoobiPI::Instance()->Load();
 
 // Configure WoobiPI
 WoobiPI::Configure(array(
-	WoobiPI::Config_Debug => false
+	// Put your configuration here
+	// HINT: You can configure almost everything
 ));
 
 // Handle the request

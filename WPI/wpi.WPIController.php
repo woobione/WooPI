@@ -17,7 +17,7 @@ abstract class WPIController {
 	/**
 	 * Default action on controllers
 	 */
-	public function Index() {
+	public function Get() {
 		return new JsonResult(array('success' => true));
 	}
 

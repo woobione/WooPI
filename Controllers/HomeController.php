@@ -1,26 +1,23 @@
 <?php
 
-class Home extends WPIController {
+class HomeController extends WPIController {
 
 	public function __construct() {
 		$this->Configuration = array(
-			RequestHandler::Config_DefaultAction	=> 'Foo'
+			
 		);
 		
 		$this->ActionConfiguration = array(
-			'Foo' => array(
-				RequestHandler::Config_AllowGet		=> true
-			)
+			'Foo'
 		);
 	}
 
 	/**
-	 * This is normally the default action
-	 * In this controller we override it to be 'Foo' instead
+	 * Action for get requests
 	 * @return JsonResult
 	 */
-	public function Index() {
-		return new JsonResult();
+	public function Get($id = 0) {
+		return new JsonResult(array('id' => $id));
 	}
 	
 	/**
