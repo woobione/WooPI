@@ -11,6 +11,7 @@ class WoobiPI {
 	const Config_PluginPath = 'plugin_path';
 	const Config_RequestHandler = 'request_handler';
 	const Config_ResultHandler = 'result_handler';
+	const Config_ExceptionMode = 'exception_mode';
 
 	/**
 	 * @var WoobiPI 
@@ -133,3 +134,8 @@ class WoobiPI {
 	}
 
 }
+
+set_exception_handler(function(Exception $e) {
+	$exceptionMode = WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode);
+	call_user_func_array(array($exceptionMode . 'Result', 'HandleException'), array($e));
+});

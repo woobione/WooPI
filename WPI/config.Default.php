@@ -5,6 +5,7 @@ return array(
 	WoobiPI::Config_PluginPath							=> 'Plugins/',
 	WoobiPI::Config_RequestHandler						=> 'RequestHandler',
 	WoobiPI::Config_ResultHandler						=> 'ResultHandler',
+	WoobiPI::Config_ExceptionMode						=> 'WPI',
 	
 	RequestHandler::Config_RequestPartSeparator			=> '/',
 	RequestHandler::Config_DefaultController			=> 'Home',
