@@ -29,6 +29,16 @@ class RequestHandler {
 	private $requestString;
 	private $requestParts;
 	private $unusedRequestParts;
+	private $apiVersionWasDefined = null;
+	private $controllerNameWasDefined = null;
+	private $actionNameWasDefined = null;
+	private $apiVersionFolder = "";
+
+
+	/**
+	 * @var string
+	 */
+	public $APIVersion = null;
 
 	/**
 	 * @var WPIController 
@@ -55,6 +65,7 @@ class RequestHandler {
 	 */
 	public function HandleRequest() {
 		$this->parseRequestString();
+		$this->loadApiVersion();
 		$this->loadController();
 		$this->loadAction();
 		$this->handleRequestType();
@@ -69,6 +80,49 @@ class RequestHandler {
 		$this->requestString = trim(filter_input(INPUT_GET, 'request'), WoobiPI::GetConfig(self::Config_RequestPartSeparator));
 		$this->requestParts = explode(WoobiPI::GetConfig(self::Config_RequestPartSeparator), $this->requestString);
 		$this->unusedRequestParts = $this->requestParts;
+	}
+	
+	/**
+	 * Returns true if API version was submitted in url
+	 * @return bool
+	 */
+	private function apiVersionWasDefined() {
+		if (is_null($this->apiVersionWasDefined))
+			$this->apiVersionWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]) && in_array($this->unusedRequestParts[0], WoobiPI::GetConfig(WoobiPI::Config_AvailableApiVersions));
+		return $this->apiVersionWasDefined;
+	}
+	
+	/**
+	 * Get chosen API version
+	 * @return string
+	 */
+	private function getApiVersion() {
+		if (is_null($this->APIVersion))
+			$this->APIVersion = $this->apiVersionWasDefined() ? $this->unusedRequestParts[0] : WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
+		return $this->APIVersion;
+	}
+	
+	/**
+	 * Returns true if the chosen API version is the current version
+	 * @return bool
+	 */
+	private function apiVersionIsCurrent() {
+		return $this->getApiVersion() == WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
+	}
+	
+	/**
+	 * Load the current API version
+	 */
+	private function loadApiVersion() {
+		if ($this->apiVersionWasDefined() && $this->getApiVersion())
+			array_shift($this->unusedRequestParts);
+		
+		if (is_dir(WoobiPI::GetConfig(self::Config_ControllerPath) . $this->getApiVersion()))
+			$this->apiVersionFolder = $this->getApiVersion() . DIRECTORY_SEPARATOR;
+		elseif ($this->apiVersionIsCurrent())
+			$this->apiVersionFolder = '';
+		else
+			exit('API version "' . $this->getApiVersion() . '" is not available');
 	}
 
 	/**
@@ -95,13 +149,25 @@ class RequestHandler {
 			exit('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
 		}
 	}
+	
+	/**
+	 * Returns true if a controller name was defined in the url
+	 * @return bool
+	 */
+	private function controllerNameWasDefined() {
+		if (is_null($this->controllerNameWasDefined))
+			$this->controllerNameWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]);
+		return $this->controllerNameWasDefined;
+	}
 
 	/**
 	 * Get controller name from request or config
 	 * @return string
 	 */
 	private function getControllerName() {
-		return ucfirst((!empty($this->requestParts[0]) ? $this->requestParts[0] : WoobiPI::GetConfig(self::Config_DefaultController)) . WoobiPI::GetConfig(self::Config_ControllerSuffix));
+		if (is_null($this->ControllerName))
+			$this->ControllerName = ucfirst(($this->controllerNameWasDefined() ? $this->unusedRequestParts[0] : WoobiPI::GetConfig(self::Config_DefaultController)) . WoobiPI::GetConfig(self::Config_ControllerSuffix));
+		return $this->ControllerName;
 	}
 
 	/**
@@ -109,26 +175,19 @@ class RequestHandler {
 	 * @return string
 	 */
 	private function getControllerFileName() {
-		return WoobiPI::GetConfig(self::Config_ControllerPath) . $this->ControllerName . '.php';
-	}
-
-	/**
-	 * Loads the controller name
-	 */
-	private function loadControllerName() {
-		$this->ControllerName = $this->getControllerName();
-		array_shift($this->unusedRequestParts);
+		return WoobiPI::GetConfig(self::Config_ControllerPath) . $this->apiVersionFolder . $this->getControllerName() . '.php';
 	}
 
 	/**
 	 * Initiate the controller and load it into the RequestHandler
 	 */
 	private function loadController() {
-		$this->loadControllerName();
+		$controllerName = $this->getControllerName();
 		if (file_exists($this->getControllerFileName())) {
 			require_once $this->getControllerFileName();
-
-			$this->Controller = new $this->ControllerName();
+			array_shift($this->unusedRequestParts);
+			
+			$this->Controller = new $controllerName();
 			WoobiPI::Configure($this->Controller->Configuration);
 		}
 	}
@@ -141,6 +200,16 @@ class RequestHandler {
 	private function isAllowedAction($actionName) {
 		$actionName = ucfirst($actionName);
 		return in_array($actionName, $this->Controller->ActionConfiguration) || array_key_exists($actionName, $this->Controller->ActionConfiguration);
+	}
+	
+	/**
+	 * Returns true if a action name was defined in the url
+	 * @return bool
+	 */
+	private function actionNameWasDefined() {
+		if (is_null($this->actionNameWasDefined))
+			$this->actionNameWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]) && $this->isAllowedAction($this->unusedRequestParts[0]);
+		return $this->actionNameWasDefined;
 	}
 
 	/**
@@ -156,29 +225,20 @@ class RequestHandler {
 	 * @return string
 	 */
 	private function getActionName() {
-		if (array_key_exists(1, $this->requestParts) && $this->isAllowedAction($this->requestParts[1])) {
-			array_shift($this->unusedRequestParts);
-			return ucfirst($this->requestParts[1]);
-		} else {
-			return $this->getRequestBasedActionName();
-		}
-	}
-
-	/**
-	 * Locates the action part of the request
-	 */
-	private function loadActionName() {
-		$this->ActionName = $this->getActionName();
+		if (is_null($this->ActionName))
+			$this->ActionName = $this->actionNameWasDefined() ? ucfirst($this->unusedRequestParts[0]) : $this->getRequestBasedActionName();
+		return $this->ActionName;
 	}
 
 	/**
 	 * Loads all data related to the action before actually performing it
 	 */
 	private function loadAction() {
-		$this->loadActionName();
-		if (array_key_exists($this->ActionName, $this->Controller->ActionConfiguration)) {
-			WoobiPI::Configure($this->Controller->ActionConfiguration[$this->ActionName]);
-		}
+		if ($this->actionNameWasDefined() && $this->getActionName())
+			array_shift($this->unusedRequestParts);
+
+		if (array_key_exists($this->getActionName(), $this->Controller->ActionConfiguration))
+			WoobiPI::Configure($this->Controller->ActionConfiguration[$this->getActionName()]);
 	}
 
 	/**
@@ -217,7 +277,7 @@ class RequestHandler {
 	 * Perform the chosen action on the controller and handle the result
 	 */
 	private function performAction() {
-		WoobiPI::HandleResult(call_user_func_array(array($this->Controller, $this->ActionName), $this->getCastedActionParameters()));
+		WoobiPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
 	}
 
 }

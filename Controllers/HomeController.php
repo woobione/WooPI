@@ -17,7 +17,6 @@ class HomeController extends WPIController {
 	 * @return JsonResult
 	 */
 	public function Get($id = 0) {
-		throw new Exception();
 		return new JsonResult(array('id' => $id));
 	}
 	
@@ -27,7 +26,6 @@ class HomeController extends WPIController {
 	 * @return JsonResult
 	 */
 	public function Foo() {
-		throw new Exception();
 		return new JsonResult(array('foo' => 'bar'));
 	}
 

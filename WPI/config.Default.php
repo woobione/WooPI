@@ -6,6 +6,10 @@ return array(
 	WoobiPI::Config_RequestHandler						=> 'RequestHandler',
 	WoobiPI::Config_ResultHandler						=> 'ResultHandler',
 	WoobiPI::Config_ExceptionMode						=> 'WPI',
+	WoobiPI::Config_CurrentApiVersion					=> '1.0',
+	WoobiPI::Config_AvailableApiVersions				=> array(
+		'1.0'
+	),
 	
 	RequestHandler::Config_RequestPartSeparator			=> '/',
 	RequestHandler::Config_DefaultController			=> 'Home',

@@ -2,7 +2,7 @@
 
 /**
  * WoobiPI (WPI)
- * @version 1.0
+ * @version 1.0.1
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WoobiPI {
@@ -12,6 +12,8 @@ class WoobiPI {
 	const Config_RequestHandler = 'request_handler';
 	const Config_ResultHandler = 'result_handler';
 	const Config_ExceptionMode = 'exception_mode';
+	const Config_CurrentApiVersion = 'current_api_version';
+	const Config_AvailableApiVersions = 'available_api_versions';
 
 	/**
 	 * @var WoobiPI 
