@@ -46,7 +46,10 @@ $this->ActionConfiguration = array(
 
 #### Available configuration options ####
 Configuration is done with the following syntax
-> ConfigurableObject::Config_OptionName => valueType|defaultValue|{can be overriden in global|controller|action} // Comment
+
+```php
+ConfigurableObject::Config_OptionName => valueType|defaultValue|{can be overriden in global|controller|action} // Comment
+```
 
 ##### WoobiPI #####
 ```php
