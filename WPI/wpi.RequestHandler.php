@@ -12,8 +12,8 @@ class RequestHandler {
 	const Config_GetAction = 'get_action';
 	const Config_PostAction = 'post_action';
 	const Config_PutAction = 'put_action';
-	const Config_DeleteAction = 'delete_action';
 	const Config_PatchAction = 'patch_action';
+	const Config_DeleteAction = 'delete_action';
 	const Config_AllowRequestTypes = 'allowed_request_types';
 	const Config_AllowHttp = 'allow_http';
 	
@@ -64,11 +64,11 @@ class RequestHandler {
 	 * Handle the users request
 	 */
 	public function HandleRequest() {
-		$this->handleProtocol();
 		$this->parseRequestString();
 		$this->loadApiVersion();
 		$this->loadController();
 		$this->loadAction();
+		$this->handleProtocol();
 		$this->handleRequestType();
 		$this->performAction();
 	}

@@ -1,7 +1,7 @@
 WoobiPI (WPI)
 ==================
 
-Version 1.1-beta
+Version 1.1
 -----------
 WoobiPI (WPI) is a super lightweight API controller framework for PHP
 
@@ -13,15 +13,15 @@ WoobiPI comes with a default configuration suited for most people. It then allow
 
 Configuration
 -----------
-Configuration in WoobiPI is as easy as eating a tasty slice of pie. You could say that the whole point with WoobiPI is configurability. You can override and append to the config from any place in the project; In the index.php file (global configuration), in your controller's $Configuration array (controller specific) or even in the controller's $ActionConfiguration array (for only a specific action). Se example below:
+Configuration in WoobiPI is as easy as eating a tasty slice of pie. You could say that the whole point with WoobiPI is configurability. You can override and append to the config from any place in the project; In the config.php file (global configuration), in your controller's $Configuration array (controller specific) or even in the controller's $ActionConfiguration array (for only a specific action). Se example below:
 
 #### Global configuration ####
-Inside your index.php
+Inside your config.php
 
 ```php
-WoobiPI::Configure(array(
+return array(
 	ConfigurableObject::Config_OptionName => mixed {, .. more}
-));
+);
 ```
 
 #### Controller configuration ####
@@ -68,7 +68,7 @@ RequestHandler::Config_RequestPartSeparator => string|'/'|{global} // How to spl
 RequestHandler::Config_DefaultController => string|'Home'|{global} // Default controller if none is specified
 RequestHandler::Config_ControllerSuffix => string|'Controller'|{global} // Controller class name suffix
 RequestHandler::Config_ControllerPath => string|'Controllers/'|{global} // Path to controllers
-RequestHandler::Config_AllowHttp => bool|false|{global} // Allow connections to the API without https
+RequestHandler::Config_AllowHttp => bool|false|{global|controller|action} // Allow connections to the API without https
 RequestHandler::Config_AllowRequestTypes => string|'get,post,put,patch,delete'|{global|controller|action} // Comma separated request types
 ```
 

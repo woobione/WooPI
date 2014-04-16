@@ -11,9 +11,7 @@ include WPI_PATH . 'WoobiPI.php';
 WoobiPI::Instance()->Load();
 
 // Configure WoobiPI
-WoobiPI::Configure(array(
-	WoobiPI::Config_ExceptionMode => 'Json'
-));
+WoobiPI::Configure(include('config.php'));
 
 // Handle the request
 WoobiPI::HandleRequest();
