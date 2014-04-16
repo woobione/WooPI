@@ -23,8 +23,8 @@ class RequestHandler {
 	const RequestType_Get = 'get';
 	const RequestType_Post = 'post';
 	const RequestType_Put = 'put';
-	const RequestType_Delete = 'delete';
 	const RequestType_Patch = 'patch';
+	const RequestType_Delete = 'delete';
 
 	private $requestString;
 	private $requestParts;
@@ -64,6 +64,7 @@ class RequestHandler {
 	 * Handle the users request
 	 */
 	public function HandleRequest() {
+		$this->handleProtocol();
 		$this->parseRequestString();
 		$this->loadApiVersion();
 		$this->loadController();
@@ -71,10 +72,25 @@ class RequestHandler {
 		$this->handleRequestType();
 		$this->performAction();
 	}
+	
+	/**
+	 * Allows or disallows protocols
+	 */
+	private function handleProtocol() {
+		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
+			throw new Exception('Using disallowed protocol HTTP');
+	}
+	
+	/**
+	 * Check if the used protocol is secure (HTTPS)
+	 * @return bool
+	 */
+	private function isSecureProtocol() {
+		return (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] === 'on') || $_SERVER['SERVER_PORT'] === '443';
+	}
 
 	/**
 	 * Parse the request string into request parts
-	 * @todo Read separator from config
 	 */
 	private function parseRequestString() {
 		$this->requestString = trim(filter_input(INPUT_GET, 'request'), WoobiPI::GetConfig(self::Config_RequestPartSeparator));

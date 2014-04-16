@@ -12,8 +12,7 @@ WoobiPI::Instance()->Load();
 
 // Configure WoobiPI
 WoobiPI::Configure(array(
-	// Put your configuration here
-	// HINT: You can configure almost everything
+	WoobiPI::Config_ExceptionMode => 'Json'
 ));
 
 // Handle the request

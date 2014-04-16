@@ -1,8 +1,10 @@
 <?php
 
+define('WOOBIPI_VERSION', '1.1-beta');
+
 /**
  * WoobiPI (WPI)
- * @version 1.0.1
+ * @version 1.1-beta
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WoobiPI {
@@ -137,6 +139,9 @@ class WoobiPI {
 
 }
 
+/**
+ * Handles exceptions
+ */
 set_exception_handler(function(Exception $e) {
 	$exceptionMode = WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode);
 	call_user_func_array(array($exceptionMode . 'Result', 'HandleException'), array($e));

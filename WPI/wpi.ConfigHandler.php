@@ -27,7 +27,7 @@ class ConfigHandler {
 	 * @param array $configuration
 	 */
 	public function AddToConfig(Array $configuration) {
-		$this->configuration = array_merge($this->configuration, $configuration);
+		$this->configuration = array_replace_recursive($this->configuration, $configuration);
 	}
 
 	/**
