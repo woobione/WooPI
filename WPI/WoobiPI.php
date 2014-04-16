@@ -1,10 +1,10 @@
 <?php
 
-define('WOOBIPI_VERSION', '1.1-beta');
+define('WOOBIPI_VERSION', '1.1');
 
 /**
  * WoobiPI (WPI)
- * @version 1.1-beta
+ * @version 1.1
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WoobiPI {
