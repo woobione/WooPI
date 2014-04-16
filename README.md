@@ -42,6 +42,7 @@ $this->ActionConfiguration = array(
 		ConfigurableObject::Config_OptionName => mixed {, .. more}
 	) {, .. more}
 );
+```
 
 #### Available configuration options ####
 Configuration is done with the following syntax
