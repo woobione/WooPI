@@ -78,7 +78,7 @@ class RequestHandler {
 	 */
 	private function handleProtocol() {
 		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
-			throw new Exception('Using disallowed protocol HTTP');
+			throw new WPIException('Using disallowed protocol HTTP');
 	}
 	
 	/**
@@ -138,7 +138,7 @@ class RequestHandler {
 		elseif ($this->apiVersionIsCurrent())
 			$this->apiVersionFolder = '';
 		else
-			exit('API version "' . $this->getApiVersion() . '" is not available');
+			throw new WPIException('API version "' . $this->getApiVersion() . '" is not available');
 	}
 
 	/**
@@ -162,7 +162,7 @@ class RequestHandler {
 	 */
 	private function handleRequestType() {
 		if (!$this->isAllowedRequestType() && !WoobiPI::IsDebug()) {
-			exit('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
+			throw new WPIException('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
 		}
 	}
 	

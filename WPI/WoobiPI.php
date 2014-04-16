@@ -140,9 +140,14 @@ class WoobiPI {
 }
 
 /**
- * Handles exceptions
+ * Exception handling
  */
 set_exception_handler(function(Exception $e) {
+	if (is_a($e, 'WPIException'))
+		$e = new Exception($e->getMessage());
+	
 	$exceptionMode = WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode);
 	call_user_func_array(array($exceptionMode . 'Result', 'HandleException'), array($e));
 });
+
+class WPIException extends Exception {}
