@@ -3,7 +3,7 @@
 /**
  * Directs the user request
  */
-class RequestHandler {
+class RequestHandler implements IRequestHandler {
 
 	const Config_ControllerSuffix = 'controller_suffix';
 	const Config_ControllerPath = 'controller_path';
