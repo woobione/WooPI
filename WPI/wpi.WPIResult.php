@@ -2,17 +2,18 @@
 
 abstract class WPIResult {
 
+	/**
+	 * Execute result
+	 */
 	abstract public function Result();
 	
 	/**
 	 * Set results response headers
 	 */
-	public function SetHeaders() {
-		// Void
-	}
+	abstract public function SetHeaders();
 	
 	/**
-	 * Default exception handler
+	 * Results exception handler
 	 * @param Exception $e
 	 */
 	public static function HandleException(Exception $e) {

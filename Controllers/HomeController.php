@@ -21,8 +21,7 @@ class HomeController extends WPIController {
 	}
 	
 	/**
-	 * This is our default action
-	 * Here we allow get for the fun of foo bar
+	 * Custom action defined in ActionConfiguration
 	 * @return JsonResult
 	 */
 	public function Foo() {

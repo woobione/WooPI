@@ -1,10 +1,14 @@
 <?php
 
 /**
- * The confighandler handles all WoobiPI configuration
+ * Responsible for WoobiPI configuration
+ * @since 1.0
  */
 class ConfigHandler {
 
+	/**
+	 * @var array
+	 */
 	private $configuration = array();
 	private $defaultConfigFileName = 'config.Default.php';
 
@@ -32,11 +36,12 @@ class ConfigHandler {
 
 	/**
 	 * Get the configuration value for $key
+	 * Returns false if key doesn't exist
 	 * @param string $key
 	 * @return mixed
 	 */
 	public function Get($key) {
-		return $this->configuration[$key];
+		return array_key_exists($key, $this->configuration) ? $this->configuration[$key] : false;
 	}
 
 }

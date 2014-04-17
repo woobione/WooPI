@@ -8,7 +8,7 @@ define('WOOBIPI_VERSION', '1.1');
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WoobiPI {
-	
+
 	const Config_Debug = 'debug';
 	const Config_PluginPath = 'plugin_path';
 	const Config_RequestHandler = 'request_handler';
@@ -61,6 +61,7 @@ class WoobiPI {
 
 	/**
 	 * Load WoobiPI
+	 * @throws WPIException
 	 */
 	public function Load() {
 		if (!$this->frameworkIsLoaded) {
@@ -70,14 +71,20 @@ class WoobiPI {
 
 			// Load request handler
 			$requestHandler = $this->ConfigHandler->Get(self::Config_RequestHandler);
-			$this->RequestHandler = new $requestHandler();
+			if (array_key_exists('IRequestHandler', class_implements($requestHandler)))
+				$this->RequestHandler = new $requestHandler();
+			else
+				throw new WPIException('RequestHandler "' . $requestHandler . '" does not implement required interface IRequestHandler');
 
 			// Load result handler
 			$resultHandler = $this->ConfigHandler->Get(self::Config_ResultHandler);
-			$this->ResultHandler = new $resultHandler();
+			if (array_key_exists('IResultHandler', class_implements('ResultHandler')))
+				$this->ResultHandler = new $resultHandler();
+			else
+				throw new WPIException('ResultHandler "' . $resultHandler . '" does not implement required interface IResultHandler');
 		}
 	}
-	
+
 	/**
 	 * Load the WPI framework
 	 */
@@ -87,7 +94,7 @@ class WoobiPI {
 		}
 		$this->frameworkIsLoaded = true;
 	}
-	
+
 	/**
 	 * Load plugins
 	 * @todo Should keep track of lodaded plugins
@@ -97,7 +104,7 @@ class WoobiPI {
 			require_once $pluginFile;
 		}
 	}
-	
+
 	/**
 	 * Check if WoobiPI is in debug mode
 	 * @return bool
@@ -116,7 +123,7 @@ class WoobiPI {
 
 	/**
 	 * Get a config value from the config
-	 * @param type $key
+	 * @param string $key
 	 */
 	public static function GetConfig($key) {
 		return WoobiPI::Instance()->ConfigHandler->Get($key);
@@ -131,23 +138,23 @@ class WoobiPI {
 
 	/**
 	 * Handle the result from the request
-	 * @param mixed $result
+	 * @param WPIResult $result
 	 */
-	public static function HandleResult($result) {
+	public static function HandleResult(WPIResult $result) {
 		WoobiPI::Instance()->ResultHandler->HandleResult($result);
 	}
 
 }
 
 /**
- * Exception handling
+ * Handle exceptions using results
  */
 set_exception_handler(function(Exception $e) {
-	if (is_a($e, 'WPIException'))
-		$e = new Exception($e->getMessage());
-	
-	$exceptionMode = WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode);
-	call_user_func_array(array($exceptionMode . 'Result', 'HandleException'), array($e));
+	$e = !is_a($e, 'WPIException') ? $e : new Exception($e->getMessage());
+	call_user_func_array(array(WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode) . 'Result', 'HandleException'), array($e));
 });
 
+/**
+ * WoobiPI internal exceptions
+ */
 class WPIException extends Exception {}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles user requests
+ * Directs the user request
  */
 class RequestHandler {
 
@@ -72,22 +72,6 @@ class RequestHandler {
 		$this->handleRequestType();
 		$this->performAction();
 	}
-	
-	/**
-	 * Allows or disallows protocols
-	 */
-	private function handleProtocol() {
-		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
-			throw new WPIException('Using disallowed protocol HTTP');
-	}
-	
-	/**
-	 * Check if the used protocol is secure (HTTPS)
-	 * @return bool
-	 */
-	private function isSecureProtocol() {
-		return (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] === 'on') || $_SERVER['SERVER_PORT'] === '443';
-	}
 
 	/**
 	 * Parse the request string into request parts
@@ -139,6 +123,22 @@ class RequestHandler {
 			$this->apiVersionFolder = '';
 		else
 			throw new WPIException('API version "' . $this->getApiVersion() . '" is not available');
+	}
+	
+	/**
+	 * Allows or disallows protocols
+	 */
+	private function handleProtocol() {
+		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
+			throw new WPIException('Using disallowed protocol HTTP');
+	}
+	
+	/**
+	 * Check if the used protocol is secure (HTTPS)
+	 * @return bool
+	 */
+	private function isSecureProtocol() {
+		return (array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] === 'on') || $_SERVER['SERVER_PORT'] === '443';
 	}
 
 	/**
@@ -233,7 +233,9 @@ class RequestHandler {
 	 * @return string
 	 */
 	private function getRequestBasedActionName() {
-		return ucfirst($this->getRequestType());
+		$requestBasedActionName = ucfirst($this->getRequestType());
+		$customRequestBasedActionName = WoobiPI::GetConfig(constant('self::Config_' . $requestBasedActionName . 'Action'));
+		return $customRequestBasedActionName ?: $requestBasedActionName;
 	}
 
 	/**
@@ -259,7 +261,7 @@ class RequestHandler {
 
 	/**
 	 * Get parameters for action
-	 * @return Array
+	 * @return array
 	 */
 	private function getActionParameters() {
 		return !empty($this->unusedRequestParts) ? $this->unusedRequestParts : array();
@@ -267,7 +269,7 @@ class RequestHandler {
 
 	/**
 	 * Get parameters for action, casted to best matching objecttype
-	 * @return Array
+	 * @return array
 	 */
 	private function getCastedActionParameters() {
 		$actionParameters = array();

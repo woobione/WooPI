@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handles result from the request
+ * Handles controller results
  */
 class ResultHandler implements IResultHandler {
 	
@@ -22,13 +22,10 @@ class ResultHandler implements IResultHandler {
 	 */
 	private function setDefaultHeaders() {
 		$defaultHeaders = WoobiPI::GetConfig(self::Config_DefaultHeaders);
-		
-		if (is_array($defaultHeaders)) {
-			foreach($defaultHeaders as $defaultHeader) {
-				header($defaultHeader);
-			}
-		} else {
-			header($defaultHeaders);
+		$defaultHeaders = is_array($defaultHeaders) ? $defaultHeaders : array($defaultHeaders);
+
+		foreach($defaultHeaders as $defaultHeader) {
+			header($defaultHeader);
 		}
 	}
 
