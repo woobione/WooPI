@@ -205,7 +205,10 @@ class RequestHandler implements IRequestHandler {
 			
 			$this->Controller = new $controllerName();
 			WoobiPI::Configure($this->Controller->Configuration);
+			return;
 		}
+		
+		throw new WPIException("No controller with given name '$controllerName' exists");
 	}
 
 	/**

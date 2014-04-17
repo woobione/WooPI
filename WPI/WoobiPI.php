@@ -74,14 +74,14 @@ class WoobiPI {
 			if (array_key_exists('IRequestHandler', class_implements($requestHandler)))
 				$this->RequestHandler = new $requestHandler();
 			else
-				throw new WPIException('RequestHandler "' . $requestHandler . '" does not implement required interface IRequestHandler');
+				throw new WPIException("RequestHandler '$requestHandler' does not implement required interface IRequestHandler");
 
 			// Load result handler
 			$resultHandler = $this->ConfigHandler->Get(self::Config_ResultHandler);
 			if (array_key_exists('IResultHandler', class_implements('ResultHandler')))
 				$this->ResultHandler = new $resultHandler();
 			else
-				throw new WPIException('ResultHandler "' . $resultHandler . '" does not implement required interface IResultHandler');
+				throw new WPIException("ResultHandler '$resultHandler' does not implement required interface IResultHandler");
 		}
 	}
 
