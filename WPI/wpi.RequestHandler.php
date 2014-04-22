@@ -16,7 +16,7 @@ class RequestHandler implements IRequestHandler {
 	const Config_DeleteAction = 'delete_action';
 	const Config_AllowRequestTypes = 'allowed_request_types';
 	const Config_AllowHttp = 'allow_http';
-	
+
 	/**
 	 * Request Types
 	 */
@@ -33,7 +33,6 @@ class RequestHandler implements IRequestHandler {
 	private $controllerNameWasDefined = null;
 	private $actionNameWasDefined = null;
 	private $apiVersionFolder = "";
-
 
 	/**
 	 * @var string
@@ -77,11 +76,11 @@ class RequestHandler implements IRequestHandler {
 	 * Parse the request string into request parts
 	 */
 	private function parseRequestString() {
-		$this->requestString = trim(filter_input(INPUT_GET, 'request'), WoobiPI::GetConfig(self::Config_RequestPartSeparator));
+		$this->requestString = trim(Request::Get('request'), WoobiPI::GetConfig(self::Config_RequestPartSeparator));
 		$this->requestParts = explode(WoobiPI::GetConfig(self::Config_RequestPartSeparator), $this->requestString);
 		$this->unusedRequestParts = $this->requestParts;
 	}
-	
+
 	/**
 	 * Returns true if API version was submitted in url
 	 * @return bool
@@ -91,7 +90,7 @@ class RequestHandler implements IRequestHandler {
 			$this->apiVersionWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]) && in_array($this->unusedRequestParts[0], WoobiPI::GetConfig(WoobiPI::Config_AvailableApiVersions));
 		return $this->apiVersionWasDefined;
 	}
-	
+
 	/**
 	 * Get chosen API version
 	 * @return string
@@ -101,7 +100,7 @@ class RequestHandler implements IRequestHandler {
 			$this->APIVersion = $this->apiVersionWasDefined() ? $this->unusedRequestParts[0] : WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
 		return $this->APIVersion;
 	}
-	
+
 	/**
 	 * Returns true if the chosen API version is the current version
 	 * @return bool
@@ -109,14 +108,14 @@ class RequestHandler implements IRequestHandler {
 	private function apiVersionIsCurrent() {
 		return $this->getApiVersion() == WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
 	}
-	
+
 	/**
 	 * Load the current API version
 	 */
 	private function loadApiVersion() {
 		if ($this->apiVersionWasDefined() && $this->getApiVersion())
 			array_shift($this->unusedRequestParts);
-		
+
 		if (is_dir(WoobiPI::GetConfig(self::Config_ControllerPath) . $this->getApiVersion()))
 			$this->apiVersionFolder = $this->getApiVersion() . DIRECTORY_SEPARATOR;
 		elseif ($this->apiVersionIsCurrent())
@@ -124,7 +123,7 @@ class RequestHandler implements IRequestHandler {
 		else
 			throw new WPIException('API version "' . $this->getApiVersion() . '" is not available');
 	}
-	
+
 	/**
 	 * Allows or disallows protocols
 	 */
@@ -132,7 +131,7 @@ class RequestHandler implements IRequestHandler {
 		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
 			throw new WPIException('Using disallowed protocol HTTP');
 	}
-	
+
 	/**
 	 * Check if the used protocol is secure (HTTPS)
 	 * @return bool
@@ -165,7 +164,7 @@ class RequestHandler implements IRequestHandler {
 			throw new WPIException('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
 		}
 	}
-	
+
 	/**
 	 * Returns true if a controller name was defined in the url
 	 * @return bool
@@ -202,12 +201,12 @@ class RequestHandler implements IRequestHandler {
 		if (file_exists($this->getControllerFileName())) {
 			require_once $this->getControllerFileName();
 			array_shift($this->unusedRequestParts);
-			
+
 			$this->Controller = new $controllerName();
 			WoobiPI::Configure($this->Controller->Configuration);
 			return;
 		}
-		
+
 		throw new WPIException("No controller with given name '$controllerName' exists");
 	}
 
@@ -220,7 +219,7 @@ class RequestHandler implements IRequestHandler {
 		$actionName = ucfirst($actionName);
 		return in_array($actionName, $this->Controller->ActionConfiguration) || array_key_exists($actionName, $this->Controller->ActionConfiguration);
 	}
-	
+
 	/**
 	 * Returns true if a action name was defined in the url
 	 * @return bool
@@ -238,7 +237,7 @@ class RequestHandler implements IRequestHandler {
 	private function getRequestBasedActionName() {
 		$requestBasedActionName = ucfirst($this->getRequestType());
 		$customRequestBasedActionName = WoobiPI::GetConfig(constant('self::Config_' . $requestBasedActionName . 'Action'));
-		return $customRequestBasedActionName ?: $requestBasedActionName;
+		return $customRequestBasedActionName ? : $requestBasedActionName;
 	}
 
 	/**
@@ -283,12 +282,12 @@ class RequestHandler implements IRequestHandler {
 					$actionParameter = intval($actionParameter);
 				else
 					$actionParameter = floatval($actionParameter);
-				
-			// Parse boolean value
+
+				// Parse boolean value
 			} elseif (in_array($actionParameter, array('true', 'false'))) {
 				$actionParameter = ($actionParameter == 'true');
 			}
-			
+
 			array_push($actionParameters, $actionParameter);
 		}
 		return $actionParameters;
@@ -299,6 +298,33 @@ class RequestHandler implements IRequestHandler {
 	 */
 	private function performAction() {
 		WoobiPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
+	}
+
+}
+
+/**
+ * Request helper
+ */
+class Request {
+
+	/**
+	 * Return GET variable
+	 * @param string $name
+	 * @param mixed $defaultValue
+	 * @return string
+	 */
+	public static function Get($name, $defaultValue = null) {
+		return filter_input(INPUT_GET, $name) ? : $defaultValue;
+	}
+
+	/**
+	 * Return POST variable
+	 * @param string $name
+	 * @param mixed $defaultValue
+	 * @return string
+	 */
+	public static function Post($name, $defaultValue = null) {
+		return filter_input(INPUT_POST, $name) ? : $defaultValue;
 	}
 
 }
