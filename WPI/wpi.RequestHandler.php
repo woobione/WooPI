@@ -145,7 +145,7 @@ class RequestHandler implements IRequestHandler {
 	 * @return string
 	 */
 	private function getRequestType() {
-		return strtolower($_SERVER['REQUEST_METHOD']);
+		return strtolower(Request::Post('_method', false)) ?: strtolower($_SERVER['REQUEST_METHOD']);
 	}
 
 	/**
@@ -160,9 +160,8 @@ class RequestHandler implements IRequestHandler {
 	 * Handle the request type
 	 */
 	private function handleRequestType() {
-		if (!$this->isAllowedRequestType() && !WoobiPI::IsDebug()) {
+		if (!$this->isAllowedRequestType() && !WoobiPI::IsDebug())
 			throw new WPIException('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
-		}
 	}
 
 	/**
