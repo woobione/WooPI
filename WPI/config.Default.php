@@ -16,7 +16,7 @@ return array(
 	RequestHandler::Config_ControllerSuffix				=> 'Controller',
 	RequestHandler::Config_ControllerPath				=> 'Controllers/',
 	RequestHandler::Config_AllowHttp					=> false,
-	RequestHandler::Config_AllowRequestTypes			=> 'get,post,put,patch,delete',
+	RequestHandler::Config_AllowRequestTypes			=> 'get,post,put,delete',
 	
 	ResultHandler::Config_DefaultHeaders				=> array(
 		'User-agent: WoobiPI API ' . WOOBIPI_VERSION
