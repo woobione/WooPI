@@ -3,7 +3,7 @@
 define('WOOPI_VERSION', '1.2');
 
 /**
- * WoobiPI (WPI)
+ * WooPI (WPI)
  * @version 1.2
  * @author Anton Netterwall <anton@woobione.se>
  */
@@ -43,7 +43,7 @@ class WooPI {
 	public $ResultHandler = null;
 
 	/**
-	 * Get singleton instance of WoobiPI
+	 * Get singleton instance of WooPI
 	 * @return WooPI
 	 */
 	public static final function Instance() {
@@ -60,7 +60,7 @@ class WooPI {
 	private function __clone() {}
 
 	/**
-	 * Load WoobiPI
+	 * Load WooPI
 	 * @throws WPIException
 	 */
 	public function Load() {
@@ -106,7 +106,7 @@ class WooPI {
 	}
 
 	/**
-	 * Check if WoobiPI is in debug mode
+	 * Check if WooPI is in debug mode
 	 * @return bool
 	 */
 	public static function IsDebug() {
@@ -155,6 +155,6 @@ set_exception_handler(function(Exception $e) {
 });
 
 /**
- * WoobiPI internal exceptions
+ * WooPI internal exceptions
  */
 class WPIException extends Exception {}

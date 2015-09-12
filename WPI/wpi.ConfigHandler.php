@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Responsible for WoobiPI configuration
+ * Responsible for WooPI configuration
  * @since 1.0
  */
 class ConfigHandler {

@@ -19,6 +19,6 @@ return array(
 	RequestHandler::Config_AllowRequestTypes			=> 'get,post,put,delete',
 	
 	ResultHandler::Config_DefaultHeaders				=> array(
-		'User-agent: WoobiPI API ' . WOOPI_VERSION
+		'User-agent: WooPI API ' . WOOPI_VERSION
 	)
 );

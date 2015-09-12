@@ -51,15 +51,15 @@ Configuration is done with the following syntax
 ConfigurableObject::Config_OptionName => valueType|defaultValue|{can be overriden in global|controller|action} // Comment
 ```
 
-##### WoobiPI #####
+##### WooPI #####
 ```php
-WoobiPI::Config_Debug => bool|false|{global} // Should WoobiPI be in debug mode
-WoobiPI::Config_PluginPath => string|'Plugins/'|{global} // Path to plugins
-WoobiPI::Config_RequestHandler => string|'RequestHandler'|{global} // Name of request handler class (allows you to override the requesthandler if you want more functionality)
-WoobiPI::Config_ResultHandler => string|'ResultHandler'|{global} // Name of the result handle class (allows you to override the resulthandler if you want more functionality)
-WoobiPI::Config_ExceptionMode => string|'WPI'{global|controller|action} // How exceptions are handled (name of result type) i.e. 'Json' would handle exceptions using Json
-WoobiPI::Config_CurrentApiVersion => string|'1.0'|{global} // Your current API version (if no version is specified in the url - this will be used)
-WoobiPI::Config_AvailableApiVersions => array|['1.0']|{global} // Available versions of your API (put named folders in the Controllers folder with names excactly like in this array)
+WooPI::Config_Debug => bool|false|{global} // Should WooPI be in debug mode
+WooPI::Config_PluginPath => string|'Plugins/'|{global} // Path to plugins
+WooPI::Config_RequestHandler => string|'RequestHandler'|{global} // Name of request handler class (allows you to override the requesthandler if you want more functionality)
+WooPI::Config_ResultHandler => string|'ResultHandler'|{global} // Name of the result handle class (allows you to override the resulthandler if you want more functionality)
+WooPI::Config_ExceptionMode => string|'WPI'{global|controller|action} // How exceptions are handled (name of result type) i.e. 'Json' would handle exceptions using Json
+WooPI::Config_CurrentApiVersion => string|'1.0'|{global} // Your current API version (if no version is specified in the url - this will be used)
+WooPI::Config_AvailableApiVersions => array|['1.0']|{global} // Available versions of your API (put named folders in the Controllers folder with names excactly like in this array)
 ```
 
 ##### Request Handler #####
@@ -74,7 +74,7 @@ RequestHandler::Config_AllowRequestTypes => string|'get,post,put,patch,delete'|{
 
 ##### Result Handler #####
 ```php
-ResultHandler::Config_DefaultHeaders => array|['User-agent: WoobiPI API ' . WOOBIPI_VERSION]|{global|controller|action} // Default headers to set when responding
+ResultHandler::Config_DefaultHeaders => array|['User-agent: WooPI API ' . WOOBIPI_VERSION]|{global|controller|action} // Default headers to set when responding
 ```
 
 Notes
