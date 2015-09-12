@@ -1,19 +1,19 @@
-WoobiPI (WPI)
+WooPI (WPI)
 ==================
 
 Version 1.2
 -----------
-WoobiPI (WPI) is a super lightweight API controller framework for PHP
+WooPI (WPI) is a super lightweight API controller framework for PHP
 
 About
 -----------
-WoobiPI is all about simplicity. It allows you to only focus on your controllers while WoobiPI does the rest for you. Not only is it very configurable but also super lightweight.
+WooPI is all about simplicity. It allows you to only focus on your controllers while WooPI does the rest for you. Not only is it very configurable but also super lightweight.
 
-WoobiPI comes with a default configuration suited for most people. It then allows you to override almost everything at almost any place.
+WooPI comes with a default configuration suited for most people. It then allows you to override almost everything at almost any place.
 
 Configuration
 -----------
-Configuration in WoobiPI is as easy as eating a tasty slice of pie. You could say that the whole point with WoobiPI is configurability. You can override and append to the config from any place in the project; In the config.php file (global configuration), in your controller's $Configuration array (controller specific) or even in the controller's $ActionConfiguration array (for only a specific action). Se example below:
+Configuration in WooPI is as easy as eating a tasty slice of pie. You could say that the whole point with WooPI is configurability. You can override and append to the config from any place in the project; In the config.php file (global configuration), in your controller's $Configuration array (controller specific) or even in the controller's $ActionConfiguration array (for only a specific action). Se example below:
 
 #### Global configuration ####
 Inside your config.php
