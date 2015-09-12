@@ -5,13 +5,13 @@ set_include_path(dirname(__FILE__) . DIRECTORY_SEPARATOR);
 define('WPI_PATH', 'WPI' . DIRECTORY_SEPARATOR);
 
 // Include WoobiPI
-include WPI_PATH . 'WoobiPI.php';
+include WPI_PATH . 'WooPI.php';
 
 // Load WoobiPI
-WoobiPI::Instance()->Load();
+WooPI::Instance()->Load();
 
 // Configure WoobiPI
-WoobiPI::Configure(include('config.php'));
+WooPI::Configure(include('config.php'));
 
 // Handle the request
-WoobiPI::HandleRequest();
+WooPI::HandleRequest();

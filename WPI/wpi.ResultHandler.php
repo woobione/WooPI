@@ -21,7 +21,7 @@ class ResultHandler implements IResultHandler {
 	 * Set default headers for every request
 	 */
 	private function setDefaultHeaders() {
-		$defaultHeadersConfigValue = WoobiPI::GetConfig(self::Config_DefaultHeaders);
+		$defaultHeadersConfigValue = WooPI::GetConfig(self::Config_DefaultHeaders);
 		$defaultHeaders = is_array($defaultHeadersConfigValue) ? $defaultHeadersConfigValue : array($defaultHeadersConfigValue);
 
 		foreach($defaultHeaders as $defaultHeader) {

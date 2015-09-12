@@ -1,13 +1,13 @@
 <?php
 
-define('WOOBIPI_VERSION', '1.2');
+define('WOOPI_VERSION', '1.2');
 
 /**
  * WoobiPI (WPI)
  * @version 1.2
  * @author Anton Netterwall <anton@woobione.se>
  */
-class WoobiPI {
+class WooPI {
 
 	const Config_Debug = 'debug';
 	const Config_PluginPath = 'plugin_path';
@@ -18,7 +18,7 @@ class WoobiPI {
 	const Config_AvailableApiVersions = 'available_api_versions';
 
 	/**
-	 * @var WoobiPI 
+	 * @var WooPI 
 	 */
 	protected static $instance = null;
 
@@ -44,7 +44,7 @@ class WoobiPI {
 
 	/**
 	 * Get singleton instance of WoobiPI
-	 * @return WoobiPI
+	 * @return WooPI
 	 */
 	public static final function Instance() {
 		if (!static::$instance)
@@ -100,7 +100,7 @@ class WoobiPI {
 	 * @todo Should keep track of lodaded plugins
 	 */
 	private function loadPlugins() {
-		foreach (glob(WoobiPI::GetConfig(self::Config_PluginPath) . 'plugin.*.php') as $pluginFile) {
+		foreach (glob(WooPI::GetConfig(self::Config_PluginPath) . 'plugin.*.php') as $pluginFile) {
 			require_once $pluginFile;
 		}
 	}
@@ -110,7 +110,7 @@ class WoobiPI {
 	 * @return bool
 	 */
 	public static function IsDebug() {
-		return WoobiPI::GetConfig(self::Config_Debug);
+		return WooPI::GetConfig(self::Config_Debug);
 	}
 
 	/**
@@ -118,7 +118,7 @@ class WoobiPI {
 	 * @param array $configuration
 	 */
 	public static function Configure(Array $configuration) {
-		WoobiPI::Instance()->ConfigHandler->AddToConfig($configuration);
+		WooPI::Instance()->ConfigHandler->AddToConfig($configuration);
 	}
 
 	/**
@@ -126,14 +126,14 @@ class WoobiPI {
 	 * @param string $key
 	 */
 	public static function GetConfig($key) {
-		return WoobiPI::Instance()->ConfigHandler->Get($key);
+		return WooPI::Instance()->ConfigHandler->Get($key);
 	}
 
 	/**
 	 * Handle the user request
 	 */
 	public static function HandleRequest() {
-		WoobiPI::Instance()->RequestHandler->HandleRequest();
+		WooPI::Instance()->RequestHandler->HandleRequest();
 	}
 
 	/**
@@ -141,7 +141,7 @@ class WoobiPI {
 	 * @param WPIResult $result
 	 */
 	public static function HandleResult(WPIResult $result) {
-		WoobiPI::Instance()->ResultHandler->HandleResult($result);
+		WooPI::Instance()->ResultHandler->HandleResult($result);
 	}
 
 }
@@ -151,7 +151,7 @@ class WoobiPI {
  */
 set_exception_handler(function(Exception $e) {
 	$e = !is_a($e, 'WPIException') ? $e : new Exception($e->getMessage());
-	call_user_func_array(array(WoobiPI::GetConfig(WoobiPI::Config_ExceptionMode) . 'Result', 'HandleException'), array($e));
+	call_user_func_array(array(WooPI::GetConfig(WooPI::Config_ExceptionMode) . 'Result', 'HandleException'), array($e));
 });
 
 /**

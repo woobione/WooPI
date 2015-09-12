@@ -76,8 +76,8 @@ class RequestHandler implements IRequestHandler {
 	 * Parse the request string into request parts
 	 */
 	private function parseRequestString() {
-		$this->requestString = trim(Request::Get('request'), WoobiPI::GetConfig(self::Config_RequestPartSeparator));
-		$this->requestParts = explode(WoobiPI::GetConfig(self::Config_RequestPartSeparator), $this->requestString);
+		$this->requestString = trim(Request::Get('request'), WooPI::GetConfig(self::Config_RequestPartSeparator));
+		$this->requestParts = explode(WooPI::GetConfig(self::Config_RequestPartSeparator), $this->requestString);
 		$this->unusedRequestParts = $this->requestParts;
 	}
 
@@ -87,7 +87,7 @@ class RequestHandler implements IRequestHandler {
 	 */
 	private function apiVersionWasDefined() {
 		if (is_null($this->apiVersionWasDefined))
-			$this->apiVersionWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]) && in_array($this->unusedRequestParts[0], WoobiPI::GetConfig(WoobiPI::Config_AvailableApiVersions));
+			$this->apiVersionWasDefined = array_key_exists(0, $this->unusedRequestParts) && !empty($this->unusedRequestParts[0]) && in_array($this->unusedRequestParts[0], WooPI::GetConfig(WooPI::Config_AvailableApiVersions));
 		return $this->apiVersionWasDefined;
 	}
 
@@ -97,7 +97,7 @@ class RequestHandler implements IRequestHandler {
 	 */
 	private function getApiVersion() {
 		if (is_null($this->APIVersion))
-			$this->APIVersion = $this->apiVersionWasDefined() ? $this->unusedRequestParts[0] : WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
+			$this->APIVersion = $this->apiVersionWasDefined() ? $this->unusedRequestParts[0] : WooPI::GetConfig(WooPI::Config_CurrentApiVersion);
 		return $this->APIVersion;
 	}
 
@@ -106,7 +106,7 @@ class RequestHandler implements IRequestHandler {
 	 * @return bool
 	 */
 	private function apiVersionIsCurrent() {
-		return $this->getApiVersion() == WoobiPI::GetConfig(WoobiPI::Config_CurrentApiVersion);
+		return $this->getApiVersion() == WooPI::GetConfig(WooPI::Config_CurrentApiVersion);
 	}
 
 	/**
@@ -116,7 +116,7 @@ class RequestHandler implements IRequestHandler {
 		if ($this->apiVersionWasDefined() && $this->getApiVersion())
 			array_shift($this->unusedRequestParts);
 
-		if (is_dir(WoobiPI::GetConfig(self::Config_ControllerPath) . $this->getApiVersion()))
+		if (is_dir(WooPI::GetConfig(self::Config_ControllerPath) . $this->getApiVersion()))
 			$this->apiVersionFolder = $this->getApiVersion() . DIRECTORY_SEPARATOR;
 		elseif ($this->apiVersionIsCurrent())
 			$this->apiVersionFolder = '';
@@ -128,7 +128,7 @@ class RequestHandler implements IRequestHandler {
 	 * Allows or disallows protocols
 	 */
 	private function handleProtocol() {
-		if (!WoobiPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
+		if (!WooPI::GetConfig(self::Config_AllowHttp) && !$this->isSecureProtocol())
 			throw new WPIException('Using disallowed protocol HTTP');
 	}
 
@@ -153,14 +153,14 @@ class RequestHandler implements IRequestHandler {
 	 * @return bool
 	 */
 	private function isAllowedRequestType() {
-		return in_array($this->getRequestType(), explode(',', WoobiPI::GetConfig(self::Config_AllowRequestTypes)));
+		return in_array($this->getRequestType(), explode(',', WooPI::GetConfig(self::Config_AllowRequestTypes)));
 	}
 
 	/**
 	 * Handle the request type
 	 */
 	private function handleRequestType() {
-		if (!$this->isAllowedRequestType() && !WoobiPI::IsDebug())
+		if (!$this->isAllowedRequestType() && !WooPI::IsDebug())
 			throw new WPIException('Request type ' . strtoupper($this->getRequestType()) . ' is not allowed');
 	}
 
@@ -180,7 +180,7 @@ class RequestHandler implements IRequestHandler {
 	 */
 	private function getControllerName() {
 		if (is_null($this->ControllerName))
-			$this->ControllerName = ucfirst(($this->controllerNameWasDefined() ? $this->unusedRequestParts[0] : WoobiPI::GetConfig(self::Config_DefaultController)) . WoobiPI::GetConfig(self::Config_ControllerSuffix));
+			$this->ControllerName = ucfirst(($this->controllerNameWasDefined() ? $this->unusedRequestParts[0] : WooPI::GetConfig(self::Config_DefaultController)) . WooPI::GetConfig(self::Config_ControllerSuffix));
 		return $this->ControllerName;
 	}
 
@@ -189,7 +189,7 @@ class RequestHandler implements IRequestHandler {
 	 * @return string
 	 */
 	private function getControllerFileName() {
-		return WoobiPI::GetConfig(self::Config_ControllerPath) . $this->apiVersionFolder . $this->getControllerName() . '.php';
+		return WooPI::GetConfig(self::Config_ControllerPath) . $this->apiVersionFolder . $this->getControllerName() . '.php';
 	}
 
 	/**
@@ -202,7 +202,7 @@ class RequestHandler implements IRequestHandler {
 			array_shift($this->unusedRequestParts);
 
 			$this->Controller = new $controllerName();
-			WoobiPI::Configure($this->Controller->Configuration);
+			WooPI::Configure($this->Controller->Configuration);
 			return;
 		}
 
@@ -235,7 +235,7 @@ class RequestHandler implements IRequestHandler {
 	 */
 	private function getRequestBasedActionName() {
 		$requestBasedActionName = ucfirst($this->getRequestType());
-		$customRequestBasedActionName = WoobiPI::GetConfig(constant('self::Config_' . $requestBasedActionName . 'Action'));
+		$customRequestBasedActionName = WooPI::GetConfig(constant('self::Config_' . $requestBasedActionName . 'Action'));
 		return $customRequestBasedActionName ? : $requestBasedActionName;
 	}
 
@@ -257,7 +257,7 @@ class RequestHandler implements IRequestHandler {
 			array_shift($this->unusedRequestParts);
 
 		if (array_key_exists($this->getActionName(), $this->Controller->ActionConfiguration))
-			WoobiPI::Configure($this->Controller->ActionConfiguration[$this->getActionName()]);
+			WooPI::Configure($this->Controller->ActionConfiguration[$this->getActionName()]);
 	}
 
 	/**
@@ -296,7 +296,7 @@ class RequestHandler implements IRequestHandler {
 	 * Perform the chosen action on the controller and handle the result
 	 */
 	private function performAction() {
-		WoobiPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
+		WooPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
 	}
 
 }

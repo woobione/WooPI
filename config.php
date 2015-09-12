@@ -1,5 +1,5 @@
 <?php
 
 return array(
-	WoobiPI::Config_ExceptionMode => 'Json'
+	WooPI::Config_ExceptionMode => 'Json'
 );

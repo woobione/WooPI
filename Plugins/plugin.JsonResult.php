@@ -33,7 +33,7 @@ class JsonResult extends WPIResult {
 	 * @param Exception $e
 	 */
 	public static function HandleException(Exception $e) {
-		WoobiPI::HandleResult(new JsonResult(array('success' => false, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString())));
+		WooPI::HandleResult(new JsonResult(array('success' => false, 'exception' => $e->getMessage(), 'trace' => $e->getTraceAsString())));
 	}
 
 	/**
