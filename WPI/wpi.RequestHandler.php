@@ -158,6 +158,7 @@ class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Handle the request type
+	 * @throws WPIException
 	 */
 	private function handleRequestType() {
 		if (!$this->isAllowedRequestType() && !WooPI::IsDebug())
@@ -194,6 +195,7 @@ class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Initiate the controller and load it into the RequestHandler
+	 * @throws WPIException
 	 */
 	private function loadController() {
 		$controllerName = $this->getControllerName();
@@ -294,12 +296,17 @@ class RequestHandler implements IRequestHandler {
 
 	/**
 	 * Perform the chosen action on the controller and handle the result
+	 * @throws WPIException
 	 */
 	private function performAction() {
 		if (!method_exists($this->Controller, $this->getActionName()))
-			throw new WPIException("Action '{$this->getActionName()}' not implemented in controller: {$this->getControllerName()}");
+			throw new WPIException("Action '{$this->getActionName()}' not implemented in controller: '{$this->getControllerName()}'");
 
-		WooPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
+		$actionResult = call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters());
+		if (!($actionResult instanceof WPIResult))
+			throw new WPIException("No valid WPIResult returned from action '{$this->getActionName()}' in controller '{$this->getControllerName()}'");
+
+		WooPI::HandleResult($actionResult);
 	}
 
 }
