@@ -18,7 +18,7 @@ class WooPI {
 	const Config_AvailableApiVersions = 'available_api_versions';
 
 	/**
-	 * @var WooPI 
+	 * @var WooPI
 	 */
 	protected static $instance = null;
 
@@ -33,12 +33,12 @@ class WooPI {
 	public $ConfigHandler = null;
 
 	/**
-	 * @var RequestHandler 
+	 * @var RequestHandler
 	 */
 	public $RequestHandler = null;
 
 	/**
-	 * @var ResultHandler 
+	 * @var ResultHandler
 	 */
 	public $ResultHandler = null;
 
