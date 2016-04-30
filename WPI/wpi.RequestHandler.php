@@ -220,7 +220,7 @@ class RequestHandler implements IRequestHandler {
 	}
 
 	/**
-	 * Returns true if a action name was defined in the url
+	 * Returns true if the action name was defined in the url
 	 * @return bool
 	 */
 	private function actionNameWasDefined() {
@@ -298,7 +298,7 @@ class RequestHandler implements IRequestHandler {
 	private function performAction() {
 		if (!method_exists($this->Controller, $this->getActionName()))
 			throw new WPIException("Action '{$this->getActionName()}' not implemented in controller: {$this->getControllerName()}");
-			
+
 		WooPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
 	}
 
