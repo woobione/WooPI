@@ -40,17 +40,17 @@ class RequestHandler implements IRequestHandler {
 	public $APIVersion = null;
 
 	/**
-	 * @var WPIController 
+	 * @var WPIController
 	 */
 	public $Controller = null;
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	public $ControllerName = null;
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	public $ActionName = null;
 
@@ -296,6 +296,9 @@ class RequestHandler implements IRequestHandler {
 	 * Perform the chosen action on the controller and handle the result
 	 */
 	private function performAction() {
+		if (!method_exists($this->Controller, $this->getActionName()))
+			throw new WPIException("Action '{$this->getActionName()}' not implemented in controller: {$this->getControllerName()}");
+			
 		WooPI::HandleResult(call_user_func_array(array($this->Controller, $this->getActionName()), $this->getCastedActionParameters()));
 	}
 
