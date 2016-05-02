@@ -9,10 +9,14 @@ class RedirectResult extends WPIResult {
 	const RedirectType_SeeOther = 303;
 	const RedirectType_Temporary = 307;
 
-	/* @var $location string */
+	/**
+	 * @var string
+	 */
 	private $location;
 
-	/* @var $redirectType int */
+	/**
+	 * @var int
+	 */
 	private $redirectType;
 
 	/**

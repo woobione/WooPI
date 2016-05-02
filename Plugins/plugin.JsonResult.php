@@ -2,7 +2,14 @@
 
 class JsonResult extends WPIResult {
 
+	/**
+	 * @var mixed
+	 */
 	private $object = null;
+
+	/**
+	 * @var string
+	 */
 	private $jsonString = null;
 
 	/**
