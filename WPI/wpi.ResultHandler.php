@@ -2,9 +2,10 @@
 
 /**
  * Handles controller results
+ * @since 1.0
  */
 class ResultHandler implements IResultHandler {
-	
+
 	const Config_DefaultHeaders = 'default_headers';
 
 	/**
@@ -16,7 +17,7 @@ class ResultHandler implements IResultHandler {
 		$result->SetHeaders();
 		$result->Result();
 	}
-	
+
 	/**
 	 * Set default headers for every request
 	 */

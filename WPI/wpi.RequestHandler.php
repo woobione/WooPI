@@ -2,6 +2,7 @@
 
 /**
  * Directs the user request
+ * @since 1.0
  */
 class RequestHandler implements IRequestHandler {
 
