@@ -1,13 +1,13 @@
 <?php
 
 return array(
-	WooPI::Config_Debug								=> false,
-	WooPI::Config_PluginPath						=> 'Plugins/',
-	WooPI::Config_RequestHandler					=> 'RequestHandler',
-	WooPI::Config_ResultHandler						=> 'ResultHandler',
-	WooPI::Config_ExceptionMode						=> 'WPI',
-	WooPI::Config_CurrentApiVersion					=> '1.0',
-	WooPI::Config_AvailableApiVersions				=> array(
+	WooPI::Config_Debug									=> false,
+	WooPI::Config_LogHandler							=> 'LogHandler',
+	WooPI::Config_RequestHandler						=> 'RequestHandler',
+	WooPI::Config_ResultHandler							=> 'ResultHandler',
+	WooPI::Config_ExceptionMode							=> 'WPI',
+	WooPI::Config_CurrentApiVersion						=> '1.0',
+	WooPI::Config_AvailableApiVersions					=> array(
 		'1.0'
 	),
 	

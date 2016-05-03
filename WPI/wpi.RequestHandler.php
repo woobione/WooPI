@@ -6,17 +6,17 @@
  */
 class RequestHandler implements IRequestHandler {
 
-	const Config_ControllerSuffix = 'controller_suffix';
-	const Config_ControllerPath = 'controller_path';
-	const Config_DefaultController = 'default_controller';
-	const Config_RequestPartSeparator = 'request_part_separator';
-	const Config_GetAction = 'get_action';
-	const Config_PostAction = 'post_action';
-	const Config_PutAction = 'put_action';
-	const Config_PatchAction = 'patch_action';
-	const Config_DeleteAction = 'delete_action';
-	const Config_AllowRequestTypes = 'allowed_request_types';
-	const Config_AllowHttp = 'allow_http';
+	const Config_ControllerSuffix = 'requesthandler_controller_suffix';
+	const Config_ControllerPath = 'requesthandler_controller_path';
+	const Config_DefaultController = 'requesthandler_default_controller';
+	const Config_RequestPartSeparator = 'requesthandler_request_part_separator';
+	const Config_GetAction = 'requesthandler_get_action';
+	const Config_PostAction = 'requesthandler_post_action';
+	const Config_PutAction = 'requesthandler_put_action';
+	const Config_PatchAction = 'requesthandler_patch_action';
+	const Config_DeleteAction = 'requesthandler_delete_action';
+	const Config_AllowRequestTypes = 'requesthandler_allowed_request_types';
+	const Config_AllowHttp = 'requesthandler_allow_http';
 
 	/**
 	 * Request Types

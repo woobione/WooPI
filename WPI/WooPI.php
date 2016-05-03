@@ -1,16 +1,17 @@
 <?php
 
-define('WOOPI_VERSION', '1.2');
+define('WOOPI_VERSION', '1.3-beta');
 
 /**
  * WooPI (WPI)
- * @version 1.2
+ * @version 1.3-beta
  * @author Anton Netterwall <anton@woobione.se>
  */
 class WooPI {
 
 	const Config_Debug = 'debug';
 	const Config_PluginPath = 'plugin_path';
+	const Config_LogHandler = 'log_handler';
 	const Config_RequestHandler = 'request_handler';
 	const Config_ResultHandler = 'result_handler';
 	const Config_ExceptionMode = 'exception_mode';
@@ -34,11 +35,15 @@ class WooPI {
 
 	/**
 	 * @var RequestHandler
+	/**
+	 * @var ILogHandler
+	 */
+	public $LogHandler = null;
 	 */
 	public $RequestHandler = null;
 
 	/**
-	 * @var ResultHandler
+	 * @var IResultHandler
 	 */
 	public $ResultHandler = null;
 
@@ -68,6 +73,12 @@ class WooPI {
 			$this->loadFramework();
 			$this->ConfigHandler = new ConfigHandler();
 			$this->loadPlugins();
+			// Load log handler
+			$logHandler = $this->ConfigHandler->Get(self::Config_LogHandler);
+			if (array_key_exists('ILogHandler', class_implements($logHandler)))
+				$this->LogHandler = new $logHandler();
+			else
+				throw new WPIException("LogHandler '$logHandler' does not implement required interface ILogHandler");
 
 			// Load request handler
 			$requestHandler = $this->ConfigHandler->Get(self::Config_RequestHandler);
@@ -142,6 +153,22 @@ class WooPI {
 	 */
 	public static function HandleResult(WPIResult $result) {
 		WooPI::Instance()->ResultHandler->HandleResult($result);
+	}
+
+	/**
+	 * Log message
+	 * @param ILogMessage $message Log message to log
+	 */
+	public static function Log(ILogMessage $message) {
+		WooPI::Instance()->LogHandler->Log($message);
+	}
+
+	/**
+	 * Get logged messages
+	 * @return ILogMessage[]
+	 */
+	public static function GetLogs() {
+		return WooPI::Instance()->LogHandler->GetLoggedMessages();
 	}
 
 }
