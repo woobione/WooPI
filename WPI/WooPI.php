@@ -78,7 +78,7 @@ class WooPI {
 
 			// Load result handler
 			$resultHandler = $this->ConfigHandler->Get(self::Config_ResultHandler);
-			if (array_key_exists('IResultHandler', class_implements('ResultHandler')))
+			if (array_key_exists('IResultHandler', class_implements($resultHandler)))
 				$this->ResultHandler = new $resultHandler();
 			else
 				throw new WPIException("ResultHandler '$resultHandler' does not implement required interface IResultHandler");
