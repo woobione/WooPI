@@ -4,13 +4,13 @@ abstract class WPIController {
 
 	/**
 	 * Controller specific configuration
-	 * @var array 
+	 * @var array
 	 */
 	public $Configuration = array();
 
 	/**
 	 * Action specific configuration
-	 * @var array 
+	 * @var array
 	 */
 	public $ActionConfiguration = array();
 

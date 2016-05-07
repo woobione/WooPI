@@ -6,7 +6,7 @@
  */
 class ResultHandler implements IResultHandler {
 
-	const Config_DefaultHeaders = 'default_headers';
+	const Config_DefaultHeaders = 'resulthandler_default_headers';
 
 	/**
 	 * Handle the result
