@@ -15,8 +15,15 @@ class LogHandler implements ILogHandler {
 	 * Log message
 	 * @param LogMessage Log message
 	 */
-	public function Log(LogMessage $message) {
+	public function Log(ILogMessage $message) {
 		array_push($this->loggedMessages, $message);
+	}
+
+	/**
+	 * @return ILogMessage[]
+	 */
+	public function GetLoggedMessages() {
+		return $this->loggedMessages;
 	}
 
 }
