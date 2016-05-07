@@ -1,6 +1,6 @@
 <?php
 
-class VoidResult extends WPIResult {
+class VoidResult extends WPIResult implements IPlugin {
 
 	public function Result() {
 		// Void
@@ -9,5 +9,5 @@ class VoidResult extends WPIResult {
 	public function SetHeaders() {
 		// Void
 	}
-	
+
 }

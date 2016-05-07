@@ -1,6 +1,6 @@
 <?php
 
-class RedirectResult extends WPIResult {
+class RedirectResult extends WPIResult implements IPlugin {
 
 	/**
 	 * Redirect types

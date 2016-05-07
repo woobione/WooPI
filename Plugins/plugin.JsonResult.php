@@ -1,6 +1,6 @@
 <?php
 
-class JsonResult extends WPIResult {
+class JsonResult extends WPIResult implements IPlugin {
 
 	/**
 	 * @var mixed
